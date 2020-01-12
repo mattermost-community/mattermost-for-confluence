@@ -1,0 +1,69 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/mattermost-for-confluence
+    docker:
+      - image: linkyard/docker-atlassian-plugin-sdk:8.0.16
+    steps:
+      - checkout
+      - restore_cache:
+          key: atlas-{{ checksum "pom.xml" }}
+      - run: atlas-mvn package
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: atlas-{{ checksum "pom.xml" }}
+      - store_test_results:
+          path: target/surefire-reports
+      - run:
+          name: Copy build artifacts
+          command: |
+            set -x
+            mkdir -p dist
+            cp target/mattermost-confluence-plugin* dist/
+      - store_artifacts:
+          path: ./dist
+          destination: build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist
+  release:
+    docker:
+      - image: cibuilds/github:0.12
+    working_directory: ~/mattermost-for-confluence
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} dist/
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              ignore: /.*/
+  build-and-release:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
+      - release:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/

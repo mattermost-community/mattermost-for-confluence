@@ -1,0 +1,13 @@
+*~
+.DS_Store
+target/
+*.iml
+overlays/
+.idea/
+.vscode
+/target/
+.classpath
+.project
+.settings
+.mvn
+dist
