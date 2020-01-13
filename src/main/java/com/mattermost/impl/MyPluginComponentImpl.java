@@ -10,21 +10,17 @@ import javax.inject.Named;
 
 @ExportAsService ({MyPluginComponent.class})
 @Named ("myPluginComponent")
-public class MyPluginComponentImpl implements MyPluginComponent
-{
+public class MyPluginComponentImpl implements MyPluginComponent {
     @ComponentImport
     private final ApplicationProperties applicationProperties;
 
     @Inject
-    public MyPluginComponentImpl(final ApplicationProperties applicationProperties)
-    {
+    public MyPluginComponentImpl(final ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
     }
 
-    public String getName()
-    {
-        if(null != applicationProperties)
-        {
+    public String getName() {
+        if (null != applicationProperties) {
             return "myComponent:" + applicationProperties.getDisplayName();
         }
         

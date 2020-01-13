@@ -1,6 +1,5 @@
 package com.mattermost.api;
 
-public interface MyPluginComponent
-{
+public interface MyPluginComponent {
     String getName();
 }
