@@ -20,5 +20,5 @@
 
         <context>mattermost-confluence-plugin</context>
     </web-resource>
-    
+
 </atlassian-plugin>

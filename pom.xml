@@ -10,12 +10,12 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <organization>
-        <name>Example Company</name>
-        <url>http://www.example.com/</url>
+        <name>Mattermost</name>
+        <url>http://www.mattermost.com/</url>
     </organization>
 
-    <name>mattermost-confluence-plugin</name>
-    <description>This is the com.mattermost:mattermost-confluence-plugin plugin for Atlassian Confluence.</description>
+    <name>Mattermost for Confluence</name>
+    <description>This is the Mattermost plugin for Atlassian Confluence.</description>
     <packaging>atlassian-plugin</packaging>
 
     <dependencies>
@@ -121,6 +121,9 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <!-- Workaround for the scanner scanning its own types. -->
+                    <!-- https://community.atlassian.com/t5/Confluence-questions/com-atlassian-plugin-spring-scanner-annotation-is-not-a-concrete/qaq-p/1047862 -->
+                    <includeExclude>-com.atlassian.plugin.spring.scanner.annotation.*</includeExclude>
                     <scannedDependencies>
                         <dependency>
                             <groupId>com.atlassian.plugin</groupId>

@@ -8,8 +8,8 @@ import com.mattermost.api.MyPluginComponent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@ExportAsService ({MyPluginComponent.class})
-@Named ("myPluginComponent")
+@ExportAsService({MyPluginComponent.class})
+@Named("myPluginComponent")
 public class MyPluginComponentImpl implements MyPluginComponent {
     @ComponentImport
     private final ApplicationProperties applicationProperties;
@@ -23,7 +23,7 @@ public class MyPluginComponentImpl implements MyPluginComponent {
         if (null != applicationProperties) {
             return "myComponent:" + applicationProperties.getDisplayName();
         }
-        
+
         return "myComponent";
     }
 }
