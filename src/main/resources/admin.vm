@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>$i18n.getText("mattermost.admin.label")</title>
+    <meta name="decorator" content="atl.admin" />
+    $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+</head>
+<body>
+<form id="admin" class="aui">
+    <div class="field-group">
+        <label for="name">$i18n.getText("mattermost.admin.webhookurl.label")</label>
+        <input type="text" id="name" name="name" class="text">
+    </div>
+    <div class="field-group">
+        <input type="submit" value="$i18n.getText("mattermost.admin.save.label")" class="button">
+    </div>
+</form>
+</body>
+</html>
