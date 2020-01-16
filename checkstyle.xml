@@ -62,9 +62,6 @@
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <module name="AvoidStarImport" />
         <module name="IllegalImport" /> <!-- defaults to sun.* packages -->
-        <module name="IllegalImport">
-            <property name="illegalPkgs" value="clover, junit.framework, org.apache.commons.lang, org.slf4j, javax.annotation.Nonnull, com.google.common.collect" />
-        </module>
         <module name="RedundantImport" />
         <module name="UnusedImports" />
 
@@ -128,8 +125,8 @@
         <module name="EmptyStatement" />
         <module name="EqualsHashCode" />
         <module name="HiddenField">
-            <property name="ignoreConstructorParameter" value="true" />
             <property name="ignoreSetter" value="true" />
+            <property name="ignoreConstructorParameter" value="true" />
         </module>
         <module name="IllegalInstantiation" />
         <module name="InnerAssignment" />

@@ -5,11 +5,12 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}" />
         <param name="plugin-icon">images/pluginIcon.png</param>
         <param name="plugin-logo">images/pluginLogo.png</param>
+        <param name="configure.url">/plugins/servlet/mattermost/configurePlugin.action</param>
     </plugin-info>
 
     <!-- add our i18n resource -->
     <resource type="i18n" name="i18n" location="mattermost-confluence-plugin"/>
-    
+
     <!-- add our web resources -->
     <web-resource key="mattermost-confluence-plugin-resources" name="mattermost-confluence-plugin Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
@@ -20,5 +21,15 @@
 
         <context>mattermost-confluence-plugin</context>
     </web-resource>
+
+    <servlet key="admin-servlet" class="com.mattermost.adminui.AdminServlet">
+        <url-pattern>/mattermost/configurePlugin.action</url-pattern>
+    </servlet>
+
+    <web-item key="confluence-menu-item" name="Mattermost Admin" section="system.admin/configuration" weight="1000">
+        <description>Link to mattermost-admin page.</description>
+        <label key="mattermost.admin.label" />
+        <link linkId="mattermost-admin-link">/plugins/servlet/mattermost/configurePlugin.action</link>
+    </web-item>
 
 </atlassian-plugin>
