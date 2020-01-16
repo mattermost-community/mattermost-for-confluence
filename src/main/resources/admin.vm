@@ -5,13 +5,15 @@
     $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
 </head>
 <body>
-<form id="admin" class="aui">
+<form id="admin" class="aui" method="POST" action="configurePlugin.action">
     <div class="field-group">
-        <label for="name">$i18n.getText("mattermost.admin.webhookurl.label")</label>
-        <input type="text" id="name" name="name" class="text">
+        <label for="webhookURL">$i18n.getText("mattermost.admin.webhookurl.label")<span class="aui-icon icon-required"></span><span class="content"> required</span></label>
+        <input type="text" id="webhookURL" name="webhookURL" class="text" value="$!webhookURL">
     </div>
-    <div class="field-group">
-        <input type="submit" value="$i18n.getText("mattermost.admin.save.label")" class="button">
+    <div class="buttons-container">
+        <div class="buttons">
+            <button class="button submit" type="submit">$i18n.getText("mattermost.admin.save.label")</button>
+        </div>
     </div>
 </form>
 </body>
