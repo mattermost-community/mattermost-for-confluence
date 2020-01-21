@@ -14,20 +14,21 @@
     <!-- add our web resources -->
     <web-resource key="mattermost-confluence-plugin-resources" name="mattermost-confluence-plugin Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
-        <resource type="download" name="mattermost-confluence-plugin.css" location="/css/mattermost-confluence-plugin.css"/>
-        <resource type="download" name="mattermost-confluence-plugin.js" location="/js/mattermost-confluence-plugin.js"/>
+
+        <resource type="download" name="mattermost-confluence-plugin.css" location="/css/mattermost-confluence-plugin.css" />
+        <resource type="download" name="mattermost-confluence-plugin.js" location="/js/mattermost-confluence-plugin.js" />
         <resource type="download" name="images/" location="/images"/>
 
         <context>mattermost-confluence-plugin</context>
     </web-resource>
 
-    <servlet key="admin-servlet" class="com.mattermost.adminui.AdminServlet">
+    <servlet key="admin-servlet" name="Mattermost Admin" class="com.mattermost.adminui.AdminServlet">
+        <description>Configure this plugin to integrate your Confluence with Mattermost.</description>
         <url-pattern>/mattermost/configurePlugin.action</url-pattern>
     </servlet>
 
-    <web-item key="confluence-menu-item" name="Mattermost Admin" section="system.admin/configuration" weight="1000">
-        <description>Link to mattermost-admin page.</description>
+    <web-item key="confluence-menu-item" name="Configuration Link" section="system.admin/configuration" weight="1000">
+        <description key="mattermost.admin.label">Mattermost Configuration</description>
         <label key="mattermost.admin.label" />
         <link linkId="mattermost-admin-link">/plugins/servlet/mattermost/configurePlugin.action</link>
     </web-item>
