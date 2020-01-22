@@ -12,13 +12,8 @@
     <resource type="i18n" name="i18n" location="mattermost-confluence-plugin"/>
 
     <!-- add our web resources -->
-    <web-resource key="mattermost-confluence-plugin-resources" name="mattermost-confluence-plugin Web Resources">
+    <web-resource key="admin-resources" name="Admin Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-
-        <resource type="download" name="mattermost-confluence-plugin.css" location="/css/mattermost-confluence-plugin.css" />
-        <resource type="download" name="mattermost-confluence-plugin.js" location="/js/mattermost-confluence-plugin.js" />
-        <resource type="download" name="images/" location="/images"/>
-
         <context>mattermost-confluence-plugin</context>
     </web-resource>
 
