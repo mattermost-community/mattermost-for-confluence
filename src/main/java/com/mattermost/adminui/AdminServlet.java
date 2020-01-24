@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Scanned
 public class AdminServlet extends HttpServlet {
-    static final String PLUGIN_STORAGE_KEY = "com.mattermost.adminui";
+    static final String PLUGIN_STORAGE_KEY = "com.mattermost";
 
     @ComponentImport
     private final UserManager userManager;
@@ -61,7 +61,7 @@ public class AdminServlet extends HttpServlet {
         context.put("webhookURL", pluginSettings.get(PLUGIN_STORAGE_KEY + ".webhookURL"));
 
         response.setContentType("text/html;charset=utf-8");
-        templateRenderer.render("admin.vm", context, response.getWriter());
+        templateRenderer.render("templates/admin.vm", context, response.getWriter());
     }
 
     private void redirectToLogin(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
