@@ -27,6 +27,8 @@
 
     <property name="charset" value="UTF-8" />
 
+    <!-- Checks that there are no tab characters in the file. -->
+    <module name="FileTabCharacter" />
 
     <!-- Checks whether files end with a new line.                        -->
     <!-- See http://checkstyle.sf.net/config_misc.html#NewlineAtEndOfFile -->
