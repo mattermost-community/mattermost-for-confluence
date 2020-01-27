@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Scanned
 public class AdminServlet extends HttpServlet {
-    static final String PLUGIN_STORAGE_KEY = "com.mattermost";
+    private static final String RESPONSE_CONTENT_TYPE = "text/html;charset=utf-8";
 
     @ComponentImport
     private final UserManager userManager;
@@ -58,7 +58,7 @@ public class AdminServlet extends HttpServlet {
         Map<String, Object> params = new HashMap<>();
         params.put("webhookURL", configStore.getWebhookURL());
 
-        response.setContentType("text/html;charset=utf-8");
+        response.setContentType(RESPONSE_CONTENT_TYPE);
         templateRenderer.render("templates/admin.vm", params, response.getWriter());
     }
 

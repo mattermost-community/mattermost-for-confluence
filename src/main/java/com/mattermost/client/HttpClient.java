@@ -2,6 +2,6 @@ package com.mattermost.client;
 
 import com.atlassian.confluence.json.json.JsonObject;
 
-public interface Client {
+public interface HttpClient {
     void sendEventToServer(JsonObject eventData);
 }

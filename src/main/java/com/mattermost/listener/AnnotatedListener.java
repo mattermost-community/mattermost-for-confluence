@@ -14,10 +14,8 @@ import com.atlassian.event.api.EventPublisher;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ConfluenceImport;
-import com.mattermost.client.Client;
-import com.mattermost.client.ClientImpl;
+import com.mattermost.client.HttpClient;
 import com.mattermost.serializer.EventRenderer;
-import com.mattermost.store.ConfigStore;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -25,20 +23,20 @@ import org.springframework.beans.factory.InitializingBean;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@ExportAsService({ AnnotatedListener.class })
-@Named
+@ExportAsService({AnnotatedListener.class})
+@Named("annotatedListener")
 @Scanned
 public class AnnotatedListener implements DisposableBean, InitializingBean {
-    private final Client client;
+    private final HttpClient httpClient;
     @ConfluenceImport
     private EventPublisher eventPublisher;
 
     @Inject
     public AnnotatedListener(
-            final ConfigStore configStore,
+            final HttpClient httpClient,
             final EventPublisher eventPublisher
     ) {
-        this.client = new ClientImpl(configStore);
+        this.httpClient = httpClient;
         this.eventPublisher = eventPublisher;
     }
 
@@ -103,7 +101,7 @@ public class AnnotatedListener implements DisposableBean, InitializingBean {
 
     // Sends an event
     private void sendActivity(final ContentEvent event) {
-        Thread t = new Thread(() -> client.sendEventToServer(EventRenderer.renderEvent(event)));
+        Thread t = new Thread(() -> httpClient.sendEventToServer(EventRenderer.renderEvent(event)));
         t.start();
     }
 }
