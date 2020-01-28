@@ -5,7 +5,6 @@ import com.atlassian.confluence.content.render.xhtml.DefaultConversionContext;
 import com.atlassian.confluence.content.render.xhtml.DeviceTypeAwareRenderer;
 import com.atlassian.confluence.core.ContentEntityObject;
 import com.atlassian.confluence.event.events.content.ContentEvent;
-import com.atlassian.confluence.event.events.content.Edited;
 import com.atlassian.confluence.event.events.content.blogpost.BlogPostCreateEvent;
 import com.atlassian.confluence.event.events.content.blogpost.BlogPostRemoveEvent;
 import com.atlassian.confluence.event.events.content.blogpost.BlogPostRestoreEvent;
@@ -75,8 +74,7 @@ public final class EventRenderer {
         result.setProperty("object", renderContentJson(event.getContent()));
         result.setProperty("event", EVENT_MAP.get(event.getClass()));
         result.setProperty("base_url", getBaseUrl());
-        if (event instanceof Edited) {
-            result.setProperty("is_minor_edit", ((Edited) event).isMinorEdit());
+        if (event instanceof Updated) {
             result.setProperty("version_comment", event.getContent().getVersionComment());
         }
 
