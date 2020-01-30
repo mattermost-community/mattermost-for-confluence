@@ -5,6 +5,7 @@ import com.atlassian.confluence.content.render.xhtml.DefaultConversionContext;
 import com.atlassian.confluence.content.render.xhtml.DeviceTypeAwareRenderer;
 import com.atlassian.confluence.core.ContentEntityObject;
 import com.atlassian.confluence.event.events.content.ContentEvent;
+import com.atlassian.confluence.event.events.content.Edited;
 import com.atlassian.confluence.event.events.content.blogpost.BlogPostCreateEvent;
 import com.atlassian.confluence.event.events.content.blogpost.BlogPostRemoveEvent;
 import com.atlassian.confluence.event.events.content.blogpost.BlogPostRestoreEvent;
@@ -29,6 +30,7 @@ import com.atlassian.confluence.pages.Comment;
 import com.atlassian.confluence.pages.Page;
 import com.atlassian.confluence.pages.TinyUrl;
 import com.atlassian.confluence.spaces.Space;
+import com.atlassian.confluence.user.PersonalInformationManager;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.sal.api.user.UserKey;
@@ -66,36 +68,58 @@ public final class EventRenderer {
     }
 
     public static JsonObject renderEvent(final ContentEvent event) {
+        // Only render the events added to the event map.
         if (EVENT_MAP.get(event.getClass()) == null) {
             return null;
         }
 
+        final ContentEntityObject content = event.getContent();
         JsonObject result = new JsonObject();
-        result.setProperty("object", renderContentJson(event.getContent()));
         result.setProperty("event", EVENT_MAP.get(event.getClass()));
         result.setProperty("base_url", getBaseUrl());
-        if (event instanceof Updated) {
-            result.setProperty("version_comment", event.getContent().getVersionComment());
+        result.setProperty("content_type", content.getType());
+        result.setProperty("excerpt", content.getExcerpt());
+        result.setProperty("timestamp", content.getCurrentDate().getTime());
+
+        if (content instanceof Comment) {
+            final Comment comment = (Comment) content;
+            result.setProperty("comment", renderCommentData(comment));
+            result.setProperty("space", renderSpaceData(comment.getSpace()));
+
+            final ContentEntityObject container = comment.getContainer();
+            if (container != null) {
+                result.setProperty("container_type", container.getType());
+                if (container instanceof Page) {
+                    result.setProperty("page", renderPageData((Page) container));
+                } else if (container instanceof BlogPost) {
+                    result.setProperty("blog", renderBlogData((BlogPost) container));
+                }
+            }
+        } else if (content instanceof Page) {
+            final Page page = (Page) content;
+            result.setProperty("page", renderPageData(page));
+            result.setProperty("space", renderSpaceData(page.getSpace()));
+        } else if (content instanceof BlogPost) {
+            final BlogPost blog = (BlogPost) content;
+            result.setProperty("blog", renderBlogData(blog));
+            result.setProperty("space", renderSpaceData(blog.getSpace()));
         }
 
-        result.setProperty("creator", renderUserData(event.getContent().getCreator()));
+        result.setProperty("creator", renderUserData(content.getCreator()));
         User user = findEventUser(event);
         if (user != null) {
             result.setProperty("user", renderUserData(user));
         }
-        return result;
-    }
 
-    private static JsonObject renderContentJson(final ContentEntityObject content) {
-        if (content instanceof Page) {
-            return renderPageData((Page) content);
-        } else if (content instanceof BlogPost) {
-            return renderBlogData((BlogPost) content);
-        } else if (content instanceof Comment) {
-            return renderCommentData((Comment) content);
-        } else {
-            throw new RuntimeException("Unknown event content");
+        if (event instanceof Updated) {
+            result.setProperty("version_comment", content.getVersionComment());
         }
+
+        if (event instanceof Edited) {
+            result.setProperty("is_minor_edit", ((Edited) event).isMinorEdit());
+        }
+
+        return result;
     }
 
     private static JsonObject renderSpaceData(final Space space) {
@@ -111,7 +135,6 @@ public final class EventRenderer {
 
     private static JsonObject renderBlogData(final BlogPost blog) {
         JsonObject result = renderObjectData(blog);
-        result.setProperty("space", renderSpaceData(blog.getSpace()));
         return result;
     }
 
@@ -122,14 +145,13 @@ public final class EventRenderer {
         result.setProperty("descendants_count", comment.getDescendantsCount());
         result.setProperty("depth", comment.getDepth());
         result.setProperty("is_inline_comment", comment.isInlineComment());
-        result.setProperty("last_modifier", comment.getStatus().getLastModifier());
         result.setProperty("status", comment.getStatus().getValue().getStringValue());
+        result.setProperty("last_modifier", comment.getStatus().getLastModifier());
         result.setProperty("thread_change_date", comment.getThreadChangedDate().getTime());
 
         if (comment.getParent() != null) {
             result.setProperty("parent", renderObjectData(comment.getParent()));
         }
-        result.setProperty("container", renderContentJson(comment.getContainer()));
         return result;
     }
 
@@ -156,20 +178,24 @@ public final class EventRenderer {
         }
         result.setProperty("ancestors", ancestors);
 
-        result.setProperty("space", renderSpaceData(page.getSpace()));
         return result;
     }
 
     private static JsonObject renderObjectData(final ContentEntityObject object) {
         JsonObject result = new JsonObject();
+        result.setProperty("id", String.valueOf(object.getId()));
+        result.setProperty("url", getBaseUrl() + object.getUrlPath());
         result.setProperty("title", object.getTitle());
         result.setProperty("content", object.getBodyAsStringWithoutMarkup());
         result.setProperty("html_content", renderAsHtml(object));
-        result.setProperty("url", getBaseUrl() + object.getUrlPath());
-        result.setProperty("id", String.valueOf(object.getId()));
-        result.setProperty("type", object.getType());
         result.setProperty("excerpt", object.getExcerpt());
-        result.setProperty("body", object.getBodyAsString());
+        result.setProperty("content_type", object.getType());
+
+        result.setProperty("version", object.getVersion());
+        result.setProperty("created_at", object.getCreationDate().getTime());
+        result.setProperty("created_by", renderUserData(object.getCreator()));
+        result.setProperty("updated_at", object.getLastModificationDate().getTime());
+        result.setProperty("updated_by", renderUserData(object.getLastModifier()));
 
         JsonArray labels = new JsonArray();
         for (Label label : object.getLabels()) {
@@ -184,6 +210,11 @@ public final class EventRenderer {
         result.setProperty("email", user.getEmail());
         result.setProperty("username", user.getName());
         result.setProperty("full_name", user.getFullName());
+
+        final PersonalInformationManager personalInformationManager = (PersonalInformationManager) ContainerManager
+                .getComponent("personalInformationManager");
+        result.setProperty("url", getBaseUrl() + personalInformationManager.getOrCreatePersonalInformation(user).getUrlPath());
+
         return result;
     }
 
