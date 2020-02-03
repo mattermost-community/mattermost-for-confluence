@@ -77,6 +77,7 @@ public final class EventRenderer {
         JsonObject result = new JsonObject();
         result.setProperty("event", EVENT_MAP.get(event.getClass()));
         result.setProperty("base_url", getBaseUrl());
+        result.setProperty("content_url", getBaseUrl() + content.getUrlPath());
         result.setProperty("content_type", content.getType());
         result.setProperty("excerpt", content.getExcerpt());
         result.setProperty("timestamp", content.getCurrentDate().getTime());
@@ -146,7 +147,6 @@ public final class EventRenderer {
         result.setProperty("depth", comment.getDepth());
         result.setProperty("is_inline_comment", comment.isInlineComment());
         result.setProperty("status", comment.getStatus().getValue().getStringValue());
-        result.setProperty("last_modifier", comment.getStatus().getLastModifier());
         result.setProperty("thread_change_date", comment.getThreadChangedDate().getTime());
 
         if (comment.getParent() != null) {
