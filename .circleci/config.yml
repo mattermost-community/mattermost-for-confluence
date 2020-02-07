@@ -1,5 +1,18 @@
 version: 2
 jobs:
+  lint:
+    working_directory: ~/mattermost-for-confluence
+    docker:
+      - image: linkyard/docker-atlassian-plugin-sdk:8.0.16
+    steps:
+      - checkout
+      - restore_cache:
+          key: atlas-{{ checksum "pom.xml" }}
+      - run: atlas-mvn checkstyle:check
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: atlas-{{ checksum "pom.xml" }}
   build:
     working_directory: ~/mattermost-for-confluence
     docker:
@@ -45,6 +58,12 @@ workflows:
   version: 2
   build:
     jobs:
+      - lint:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              ignore: /.*/
       - build:
           filters:
             branches:
