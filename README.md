@@ -41,10 +41,13 @@ Note: Full documentation is always available in the [Docs](https://developer.atl
 6. The plugin will be uploaded to the Confluence Server and will be automatically installed. Check the **Manage apps** screen to ensure that the plugin is available.
 
 #### Configuration
-- Make sure you have installed the plugin in your Confluence Instance.
-- Click on **Configure** from the **Manage apps** page.
+1. Make sure you have installed the plugin in your Confluence Instance.
+2. Click on **Configure** from the **Manage apps** page.
    
    ![ManageAddOns](https://i.imgur.com/wzuLXE6.png)
 
-- Set the webhook URL: `https://SITEURL/plugins/com.mattermost.confluence/api/v1/server/webhook?secret=WEBHOOKSECRET`.
+3. Set the webhook URL: `https://SITEURL/plugins/com.mattermost.confluence/api/v1/server/webhook?secret=WEBHOOKSECRET`.
+   
+   ![ConfigureAddOn](https://i.imgur.com/h7e9lyr.png)
+
     - Replace `SITEURL` with the site URL of your Mattermost instance, and `WEBHOOKSECRET` with the secret generated in Mattermost via **System Console > Plugins > Confluence**.
