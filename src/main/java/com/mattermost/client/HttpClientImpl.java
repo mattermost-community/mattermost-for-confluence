@@ -2,11 +2,7 @@ package com.mattermost.client;
 
 import com.atlassian.confluence.json.json.JsonObject;
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
-import com.mattermost.Utils;
 import com.mattermost.store.ConfigStore;
-
-import org.slf4j.Logger;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,17 +11,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-
 import javax.inject.Named;
 
 @ExportAsService({HttpClient.class})
 @Named("httpClient")
 public final class HttpClientImpl implements HttpClient {
-    private static final Logger LOGGER = Utils.getLogger();
     private final ConfigStore configStore;
 
     public HttpClientImpl(final ConfigStore configStore) {
-        LOGGER.debug("HttpClient Initialized");
+        System.out.println("HttpClient Initialized");
         this.configStore = configStore;
     }
 

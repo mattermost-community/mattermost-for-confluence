@@ -86,6 +86,7 @@ public class AnnotatedListener implements DisposableBean, InitializingBean {
 
     @EventListener
     public void commentCreateEvent(final CommentCreateEvent event) {
+        System.out.println("!!!!!!!!!!!!!!!!!!!");
         sendActivity(event);
     }
 
@@ -101,7 +102,13 @@ public class AnnotatedListener implements DisposableBean, InitializingBean {
 
     // Sends an event
     private void sendActivity(final ContentEvent event) {
-        Thread t = new Thread(() -> httpClient.sendEventToServer(EventRenderer.renderEvent(event)));
+        Thread t;
+        t = new Thread(
+            () -> {
+                System.out.println("1111111111");
+                httpClient.sendEventToServer(EventRenderer.renderEvent(event));
+            }
+        );
         t.start();
     }
 }

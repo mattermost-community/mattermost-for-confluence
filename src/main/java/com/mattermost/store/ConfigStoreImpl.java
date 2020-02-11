@@ -12,7 +12,6 @@ import javax.inject.Named;
 @Named("configStore")
 public class ConfigStoreImpl implements ConfigStore {
     private static final String KEY_WEBHOOK_URL = Constants.PLUGIN_STORAGE_KEY + ".webhookURL";
-    private String webhookURL;
 
     @ConfluenceImport
     private PluginSettingsFactory pluginSettingsFactory;
@@ -20,17 +19,15 @@ public class ConfigStoreImpl implements ConfigStore {
     @Inject
     public ConfigStoreImpl(final PluginSettingsFactory pluginSettingsFactory) {
         this.pluginSettingsFactory = pluginSettingsFactory;
-        webhookURL = (String) pluginSettingsFactory.createGlobalSettings().get(KEY_WEBHOOK_URL);
     }
 
     @Override
     public String getWebhookURL() {
-        return webhookURL;
+        return (String) pluginSettingsFactory.createGlobalSettings().get(KEY_WEBHOOK_URL);
     }
 
     @Override
     public void setWebhookURL(final String url) {
         pluginSettingsFactory.createGlobalSettings().put(KEY_WEBHOOK_URL, url);
-        this.webhookURL = url;
     }
 }
