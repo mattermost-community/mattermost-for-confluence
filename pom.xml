@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mattermost</groupId>
     <artifactId>mattermost-confluence-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <organization>
         <name>Mattermost</name>
@@ -100,7 +100,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/Brightscout/mattermost-for-confluence.git</developerConnection>
-      <tag>mattermost-confluence-plugin-1.0.0</tag>
+      <tag>HEAD</tag>
   </scm>
     <build>
         <plugins>
