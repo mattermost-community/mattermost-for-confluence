@@ -1,13 +1,12 @@
 package com.mattermost;
 
-import com.google.common.base.Throwables;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public final class Utils {
-    private static final Logger LOGGER = getLogger();
-
     private Utils() {
     }
 
@@ -15,28 +14,46 @@ public final class Utils {
         return (url.startsWith("https://") || url.startsWith("http://"));
     }
 
-    /**
-     * Get a logger for the caller class.
-     *
-     * @return
-     */
-    public static Logger getLogger() {
-        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        /*
-         * stackTrace[0] is for Thread.currentThread().getStackTrace() stackTrace[1] is for this method log()
-         */
-        String className = stackTrace[2].getClassName();
-        if (LOGGER != null) {
-            LOGGER.trace("Get logger for class {}", className);
+    private static String now() {
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date());
+    }
+
+    public static void log(final String message) {
+        System.out.println(now() + ": com.mattermost: " + message);
+    }
+
+    public static void log(final String message, final Throwable throwable) {
+        String messageToLog = message;
+        if (throwable != null && message != null) {
+            messageToLog += " : " + Utils.getStackTraceString(throwable);
         }
-        return LoggerFactory.getLogger(className);
+        if (throwable != null && message == null) {
+            messageToLog = Utils.getStackTraceString(throwable);
+        }
+        log(messageToLog);
     }
 
-    public static void throwUnchecked(final Exception e) {
-        throw new IllegalStateException(e);
-    }
+    /**
+     * @return Stack trace in form of String
+     */
+    private static String getStackTraceString(final Throwable tr) {
+        if (tr == null) {
+            return "";
+        }
 
-    public static String getStackTrace(final Exception e) {
-        return Throwables.getStackTraceAsString(e);
+        // if network is unavailable
+        Throwable t = tr;
+        while (t != null) {
+            if (t instanceof UnknownHostException) {
+                return "network error.";
+            }
+            t = t.getCause();
+        }
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        tr.printStackTrace(pw);
+        pw.flush();
+        return sw.toString();
     }
 }

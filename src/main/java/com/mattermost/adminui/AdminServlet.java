@@ -76,7 +76,7 @@ public class AdminServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
         String webhookURL = StringUtils.trimToEmpty(request.getParameter("webhookURL"));
         if (StringUtils.isNotEmpty(webhookURL) && Utils.isValidUrl(webhookURL)) {
             configStore.setWebhookURL(webhookURL);

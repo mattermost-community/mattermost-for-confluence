@@ -6,6 +6,8 @@
         <param name="plugin-icon">images/pluginIcon.png</param>
         <param name="plugin-logo">images/pluginLogo.png</param>
         <param name="configure.url">/plugins/servlet/mattermost/configurePlugin.action</param>
+        <param name="atlassian-data-center-status">compatible</param>
+        <param name="atlassian-data-center-compatible">true</param>
     </plugin-info>
 
     <!-- add our i18n resource -->

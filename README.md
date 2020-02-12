@@ -51,3 +51,4 @@ Note: Full documentation is always available in the [Docs](https://developer.atl
    ![ConfigureAddOn](https://i.imgur.com/h7e9lyr.png)
 
     - Replace `SITEURL` with the site URL of your Mattermost instance, and `WEBHOOKSECRET` with the secret generated in Mattermost via **System Console > Plugins > Confluence**.
+    - Please note that the URL should start with `https://` or `http://` or it would fail to be saved.
