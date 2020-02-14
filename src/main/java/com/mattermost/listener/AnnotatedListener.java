@@ -14,6 +14,7 @@ import com.atlassian.event.api.EventPublisher;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ConfluenceImport;
+import com.mattermost.Utils;
 import com.mattermost.client.HttpClient;
 import com.mattermost.serializer.EventRenderer;
 
@@ -49,14 +50,14 @@ public class AnnotatedListener implements DisposableBean, InitializingBean {
     public void afterPropertiesSet() throws Exception {
         // Register ourselves with the EventPublisher
         eventPublisher.register(this);
-        System.out.println("Listener Initialized");
+        Utils.log("Listener Initialized.");
     }
 
     // Unregister the listener if the plugin is uninstalled or disabled.
     @Override
     public void destroy() throws Exception {
         eventPublisher.unregister(this);
-        System.out.println("Listener Un-initialized");
+        Utils.log("Listener Un-initialized.");
     }
 
     @EventListener
@@ -101,7 +102,6 @@ public class AnnotatedListener implements DisposableBean, InitializingBean {
 
     // Sends an event
     private void sendActivity(final ContentEvent event) {
-        Thread t = new Thread(() -> httpClient.sendEventToServer(EventRenderer.renderEvent(event)));
-        t.start();
+        httpClient.sendEventToServer(EventRenderer.renderEvent(event));
     }
 }
