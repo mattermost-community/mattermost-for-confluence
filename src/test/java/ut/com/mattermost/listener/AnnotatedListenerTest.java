@@ -72,56 +72,56 @@ public class AnnotatedListenerTest extends TestCase {
         verify(eventPublisher, times(1)).unregister(any(AnnotatedListener.class));
     }
 
-    @Test(timeout = 600) // in case we never get a notification
+    @Test
     public void testOnPageCreateEvent() {
         annotatedListener.onPageCreateEvent(pageCreateEvent);
         verify(httpClient, times(1)).sendEventToServer(any(JsonObject.class));
         verifyNoMoreInteractions(httpClient);
     }
 
-    @Test(timeout = 600) // in case we never get a notification
+    @Test
     public void testOnPageUpdateEvent() {
         annotatedListener.onPageUpdateEvent(pageUpdateEvent);
         verify(httpClient, times(1)).sendEventToServer(any(JsonObject.class));
         verifyNoMoreInteractions(httpClient);
     }
 
-    @Test(timeout = 600) // in case we never get a notification
+    @Test
     public void testPageRemoveEvent() {
         annotatedListener.pageRemoveEvent(pageRemoveEvent);
         verify(httpClient, times(1)).sendEventToServer(any(JsonObject.class));
         verifyNoMoreInteractions(httpClient);
     }
 
-    @Test(timeout = 600) // in case we never get a notification
+    @Test
     public void testPageTrashedEvent() {
         annotatedListener.pageTrashedEvent(pageTrashedEvent);
         verify(httpClient, times(1)).sendEventToServer(any(JsonObject.class));
         verifyNoMoreInteractions(httpClient);
     }
 
-    @Test(timeout = 600) // in case we never get a notification
+    @Test
     public void testPageRestoreEvent() {
         annotatedListener.pageRestoreEvent(pageRestoreEvent);
         verify(httpClient, times(1)).sendEventToServer(any(JsonObject.class));
         verifyNoMoreInteractions(httpClient);
     }
 
-    @Test(timeout = 600) // in case we never get a notification
+    @Test
     public void testCommentCreateEvent() {
         annotatedListener.commentCreateEvent(commentCreateEvent);
         verify(httpClient, times(1)).sendEventToServer(any(JsonObject.class));
         verifyNoMoreInteractions(httpClient);
     }
 
-    @Test(timeout = 600) // in case we never get a notification
+    @Test
     public void testCommentUpdateEvent() {
         annotatedListener.commentUpdateEvent(commentUpdateEvent);
         verify(httpClient, times(1)).sendEventToServer(any(JsonObject.class));
         verifyNoMoreInteractions(httpClient);
     }
 
-    @Test(timeout = 600) // in case we never get a notification
+    @Test
     public void testCommentRemoveEvent() {
         annotatedListener.commentRemoveEvent(commentRemoveEvent);
         verify(httpClient, times(1)).sendEventToServer(any(JsonObject.class));
