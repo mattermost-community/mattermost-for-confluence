@@ -1,5 +1,5 @@
 # Mattermost for Confluence
-[![CircleCI branch](https://img.shields.io/circleci/project/github/Brightscout/mattermost-for-confluence/master.svg)](https://circleci.com/gh/Brightscout/mattermost-for-confluence)
+[![CircleCI branch](https://img.shields.io/circleci/project/github/mattermost/mattermost-for-confluence/master.svg)](https://circleci.com/gh/mattermost/mattermost-for-confluence)
 
 Publish Confluence Server events to Mattermost. Requires the Mattermost Plugin to be installed and configured on your Mattermost instance.
 
@@ -27,7 +27,7 @@ Here are the SDK commands you'll use immediately:
 Note: Full documentation is always available in the [Docs](https://developer.atlassian.com/display/DOCS/Introduction+to+the+Atlassian+Plugin+SDK).
 
 #### Manual Installation
-1. Download the Mattermost Confluence Plugin OBR file from the [download page](https://github.com/Brightscout/mattermost-for-confluence/releases).
+1. Download the Mattermost Confluence Plugin OBR file from the [download page](https://github.com/mattermost/mattermost-for-confluence/releases).
 2. Open the **Confluence administration** menu and select **Manage apps** (must have Admin rights).
    
    ![Add-ons](https://i.imgur.com/uCNhnur.png)
